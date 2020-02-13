@@ -2,6 +2,7 @@ from tensorflow.keras.datasets import fashion_mnist
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras import utils
+import numpy as np
 
 # Загрузка данных из сети
 # x_train - изображения, которые будут использоваться для обучения
@@ -16,7 +17,6 @@ x_train = x_train.reshape(60000, 784)
 # x_backup_train = x_train
 # x_train = x_test.copy
 # x_train /= 255
-
 
 # Преобразуем метки в категаории
 y_train = utils.to_categorical(y_train, 10)
@@ -41,4 +41,18 @@ print(model.summary())
 
 model.fit(x_train, y_train, batch_size=200, epochs=100, verbose=1)
 
-print('Hello deep fashion')
+
+print(model.summary())
+
+# Запустим сеть на входных данных
+predictions = model.predict(x_train)
+
+# Выводим один из результатов распознавания
+print(predictions[0])
+
+# Выводим класс, предсказанный нейросетью
+print(classes[int(np.argmax(predictions[0]))])
+
+# Выводим правильный класс
+print(classes[int(np.argmax(predictions[0]))])
+
