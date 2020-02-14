@@ -16,7 +16,8 @@ x_train = x_train.reshape(60000, 784)
 # таким образом получиться что данные на входе в сеть будут от нуля до единицы, что удобно для обучения нейросети
 # x_backup_train = x_train
 # x_train = x_test.copy
-# x_train /= 255
+x_train = x_train.astype('float32')
+x_train /= 255
 
 # Преобразуем метки в категаории
 y_train = utils.to_categorical(y_train, 10)
@@ -39,7 +40,7 @@ model.compile(loss="categorical_crossentropy", optimizer="SGD", metrics=["accura
 
 print(model.summary())
 
-model.fit(x_train, y_train, batch_size=200, epochs=100, verbose=1)
+model.fit(x_train, y_train, batch_size=200, epochs=100, verbose=1, validation_split=0.2)
 
 
 print(model.summary())
@@ -55,4 +56,10 @@ print(classes[int(np.argmax(predictions[0]))])
 
 # Выводим правильный класс
 print(classes[int(np.argmax(predictions[0]))])
+
+# Оценка обучения на тестовых данных(на которых сеть не обучалась)
+scores = model.evaluate(x_test, y_test, verbose=1)
+
+print("Доля верных ответов на тестовых данных, в процентах:", round(scores[1] * 100, 4))
+
 
